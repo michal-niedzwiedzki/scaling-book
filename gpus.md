@@ -330,7 +330,7 @@ Here is a diagram for a reference 1024 GPU H100 system, where each box in the bo
 | Level | GPUs | Switches per Unit | Switch Type | Bandwidth_per_Unit_TBs_full_duplex | GPU_to_GPU_Bandwidth_GBs_full_duplex | Fat Tree Bandwidth (GB/s, full-duplex) |
 | :---: | :------------: | :-------------------------: | :---------: | :------------------------------------------: | :--------------------------------------: | :---: |
 | Node  |       8        |              4              |     NVL     |                     3.6                      |                   450                    | 450
-| Leaf  |      256       |              8              |     IB      |                     12.8                     |                    50                    | 400 |
+| Leaf  |      256       |              8              |     IB      |                     12.8                     |                    55                    | 400 |
 | Spine |      1024      |             16              |     IB      |                     51.2                     |                    50                    | 400 |
 
 ```vmark #gpus
