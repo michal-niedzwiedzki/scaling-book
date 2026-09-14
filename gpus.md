@@ -327,11 +327,17 @@ Here is a diagram for a reference 1024 GPU H100 system, where each box in the bo
 
 **How much bandwidth do we have?** The overall topology of the InfiniBand network (called the "scale out network") is that of a **fat tree**, with the cables and switches guaranteeing full bisection bandwidth above the node level (here, 400GB/s). That means if we split the nodes in half, each node can egress 400GB/s to a node in the other partition at the same time. More to the point, this means we should have a roughly constant AllReduce bandwidth in the scale out network! While it may not be implemented this way, you can imagine doing a ring reduction over arbitrarily many nodes in the scale-out network, since you can construct a ring including every one.
 
-| Level | GPUs | Switches per Unit | Switch Type | Bandwidth per Unit (TB/s, full-duplex) | GPU-to-GPU Bandwidth (GB/s, full-duplex) | Fat Tree Bandwidth (GB/s, full-duplex) |
+| Level | GPUs | Switches per Unit | Switch Type | Bandwidth_per_Unit_TBs_full_duplex | GPU_to_GPU_Bandwidth_GBs_full_duplex | Fat Tree Bandwidth (GB/s, full-duplex) |
 | :---: | :------------: | :-------------------------: | :---------: | :------------------------------------------: | :--------------------------------------: | :---: |
 | Node  |       8        |              4              |     NVL     |                     3.6                      |                   450                    | 450
 | Leaf  |      256       |              8              |     IB      |                     12.8                     |                    50                    | 400 |
 | Spine |      1024      |             16              |     IB      |                     51.2                     |                    50                    | 400 |
+
+```vmark #gpus
+GPU_to_GPU_Bandwidth_GBs_full_duplex = ROUND(Bandwidth_per_Unit_TBs_full_duplex / GPUs * 1000, 0)
+```
+
+*Units: `Bandwidth_per_Unit_TBs_full_duplex` is TB/s; `GPU_to_GPU_Bandwidth_GBs_full_duplex` is GB/s.*
 
 By comparison, a TPU v5p has about 90GB/s egress bandwidth per link, or 540GB/s egress along all axes of the 3D torus. This is not point-to-point so it can only be used for restricted, uniform communication patterns, but it still gives us a much higher TPU to TPU bandwidth that can scale to arbitrarily large topologies (at least up to 8960 TPUs).
 
